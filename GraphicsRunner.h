@@ -7,24 +7,32 @@
 
 #include <SDL2/SDL.h>
 
+#include "Person.h"
 
 
 class GraphicsRunner {
-    SDL_Window* window{};
-    SDL_Renderer* renderer{};
-    const int SCREEN_WIDTH = 1280;
-    const int SCREEN_HEIGHT = 720;
+    SDL_Window *window{};
+    SDL_Renderer *renderer{};
+    const int GRID_WIDTH = 60;
+    const int GRID_HEIGHT = 120;
+    const int SCREEN_WIDTH = GRID_WIDTH * 10;
+    const int SCREEN_HEIGHT = GRID_HEIGHT * 10;
+
+
+    void drawCircle(int centerX, int centerY, int radius) const;
+
 public:
     /// Creates a new GraphicsRunner object
     GraphicsRunner();
+
     /// Initializes the GraphicsRunner object with the default SDL initialization
     bool initialize();
-    /// Updates the screen, is called before draw and runs every frame
-    void update();
+
     /// Draws on the screen, runs every frame
-    void draw();
+    void draw(int counter, const std::vector<Person*>& people);
+
     /// Closes the SDL instance
-    void close() const;
+    void close();
 };
 
 

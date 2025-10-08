@@ -4,6 +4,8 @@
 
 #include "Command.h"
 
+#include <ostream>
+
 Facing Command::newFacing(const Facing facing) const {
     switch (facing) {
         case HTs:
@@ -60,10 +62,10 @@ Facing Command::newFacing(const Facing facing) const {
 }
 
 std::pair<int, int> Command::deltaStep(const Facing facing) const {
-    std::pair<int, int> result{0, 0};
+    std::pair result{0, 0};
 
     // Default step size: 2, or 1 if half march/legato
-    const int stepSize = (this->stepType == halfMarch || this->stepType == legato) ? 1 : 2;
+    const int stepSize = this->isHalfMarch ? 1 : 2;
 
     switch (facing) {
         case HTs:
@@ -77,12 +79,12 @@ std::pair<int, int> Command::deltaStep(const Facing facing) const {
             break;
 
         case SS:
-            result.first = stepSize;
+            result.first = -stepSize;
             result.second = 0;
             break;
 
         case PB:
-            result.first = -stepSize;
+            result.first = stepSize;
             result.second = 0;
             break;
         default: ;
@@ -92,9 +94,10 @@ std::pair<int, int> Command::deltaStep(const Facing facing) const {
 }
 
 
-Command::Command(const StepType step, const Direction dir) {
+Command::Command(const StepType step, const Direction dir, bool half) {
     this->stepType = step;
     this->direction = dir;
+    this->isHalfMarch = half;
 }
 
 std::pair<Facing, std::pair<int, int> > Command::executeCommand(Facing facing) const {
@@ -103,14 +106,11 @@ std::pair<Facing, std::pair<int, int> > Command::executeCommand(Facing facing) c
     std::pair<int, int> change = deltaStep(facing);
     switch (this->stepType) {
         case march:
-        case halfMarch:
-        case legato:
             // can just step in direction of facing, half steps are handled by the deltaStep function
             result = std::make_pair(facing, change);
             break;
 
         case pivot:
-        case turnStep:
             // handle turning steps
             result = std::make_pair(newFace, change);
             break;

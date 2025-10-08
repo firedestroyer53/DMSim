@@ -20,15 +20,7 @@ add_executable(DMSim
         Command.cpp
         BigCommands.cpp
         GraphicsRunner.cpp
-        GraphicsRunner.h
 )
 
 # Link SDL2 libraries
 target_link_libraries(DMSim SDL2main SDL2)
-
-# Copy SDL2.dll to executable folder after build
-add_custom_command(TARGET DMSim POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${SDL2_ROOT}/bin/SDL2.dll"
-        $<TARGET_FILE_DIR:DMSim>
-)

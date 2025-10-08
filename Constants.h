@@ -5,13 +5,17 @@
 #ifndef DMSIM_ENUMS_H
 #define DMSIM_ENUMS_H
 
+constexpr int NUM_RANKS = 7;
+constexpr int NUM_FILES = 12;
+constexpr int RANK_OFFSET = 50;
+constexpr int FILE_OFFSET = 5;
 
 enum Facing {
     HTs, MVs, SS, PB, HTsSS, HTsPB, MVsSS, MVsPB,
 };
 
 enum StepType {
-    march, pivot, turnStep, halfMarch, legato
+    march, pivot
 };
 
 enum Direction {

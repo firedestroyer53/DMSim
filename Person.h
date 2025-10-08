@@ -10,10 +10,14 @@
 
 
 class Person {
-    int rank;
-    int file;
+    int globalRank;
+    int globalFile;
+    int localRank;
+    int localFile;
+    int numCommands;
     Facing facing;
     std::queue<Command *> commandQueue;
+    std::vector<std::pair<int, int>> history;
 
 public:
     /// Creates a new Person object with rank and file initialized to 0
@@ -31,16 +35,29 @@ public:
     /// @return the file of the person on the field
     [[nodiscard]] int getFile() const;
 
+    /// @return the local rank of the person on the field
+    [[nodiscard]] int getLocalRank() const;
+
+    /// @return the local file of the person on the field
+    [[nodiscard]] int getLocalFile() const;
+
     /// @return the facing of the person
     [[nodiscard]] Facing getFacing() const;
 
+    /// @return the number of commands a person has
+    [[nodiscard]] int getNumCommands() const;
+
+    /// @return the indexed history of a person
+    [[nodiscard]] std::pair<int, int> getHistoryAt(int counter);
+
+    /// @return a reference to the history vector
+    [[nodiscard]] std::vector<std::pair<int, int>>* getHistory();
 
     /// Sets the rank of the person
     void setRank(int r);
 
     /// Sets the file of the person
     void setFile(int f);
-
 
     /// Executes the next command in the queue
     void executeNext();
@@ -50,7 +67,7 @@ public:
 
     /// Adds a command to the queue
     /// @param command the command to be added
-    void addCommand(Command *command);
+    void addCommand(const Command *command);
 
     /// Adds a list of commands to the queue
     /// @param commands the list of commands to be added

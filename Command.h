@@ -4,14 +4,16 @@
 
 #ifndef DMSIM_COMMAND_H
 #define DMSIM_COMMAND_H
+#include <string>
 #include <utility>
 
-#include "Enums.h"
+#include "Constants.h"
 
 
 class Command {
     StepType stepType;
     Direction direction;
+    bool isHalfMarch;
 
     [[nodiscard]] Facing newFacing(Facing facing) const;
 
@@ -21,13 +23,16 @@ public:
     /// Creates a new command with a StepType and a Direction
     /// @param step the type of step the command uses
     /// @param dir the direction (if any) of the command. (forward by default)
-    Command(StepType step, Direction dir);
+    /// @param half the size of the step
+    Command(StepType step, Direction dir, bool half);
 
     /// Executes the command based on the step type and direction, and then returns the displacement of the person
     /// @return the facing of the person and a pair of ints of the displacement of the person
     [[nodiscard]] std::pair<Facing, std::pair<int, int> > executeCommand(Facing) const;
-};
 
+
+    std::string toString();
+};
 
 
 #endif //DMSIM_COMMAND_H

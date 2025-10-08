@@ -11,10 +11,13 @@
 
 class BigCommands {
 public:
-    static void counterMarch(std::vector<Person*>* persons);
-    static void cascade(std::vector<Person*>* persons, Direction direction);
-    static void column(std::vector<Person*>* persons, Direction direction);
-    static void oblique(std::vector<Person*>* persons, Direction direction);
+    static void counterMarch(const std::vector<Person *> *persons);
+
+    static void cascade(std::vector<Person *> *persons, Direction direction);
+
+    static void column(std::vector<Person *> *persons, Direction direction);
+
+    static void oblique(std::vector<Person *> *persons, Direction direction);
 };
 
 
