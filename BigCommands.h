@@ -6,18 +6,20 @@
 #define DMSIM_BIGCOMMANDS_H
 #include "Command.h"
 #include "Person.h"
+#include "LinkedList.h"
 
 #include <vector>
 
-class BigCommands {
-public:
-    static void counterMarch(const std::vector<Person *> *persons);
+namespace BigCommands {
+    std::vector<LinkedList<Person *> > setup(int numFiles, int numRanks, Facing facing);
 
-    static void cascade(std::vector<Person *> *persons, Direction direction);
+    void counterMarch(const std::vector<LinkedList<Person *> > *persons);
 
-    static void column(std::vector<Person *> *persons, Direction direction);
+    void cascade(std::vector<Person *> *persons, Direction direction);
 
-    static void oblique(std::vector<Person *> *persons, Direction direction);
+    void column(std::vector<Person *> *persons, Direction direction);
+
+    void oblique(std::vector<Person *> *persons, Direction direction);
 };
 
 

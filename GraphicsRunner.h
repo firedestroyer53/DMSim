@@ -15,8 +15,8 @@ class GraphicsRunner {
     SDL_Renderer *renderer{};
     const int GRID_WIDTH = 60;
     const int GRID_HEIGHT = 120;
-    const int SCREEN_WIDTH = GRID_WIDTH * 10;
-    const int SCREEN_HEIGHT = GRID_HEIGHT * 10;
+    const int SCREEN_WIDTH = GRID_WIDTH * 8;
+    const int SCREEN_HEIGHT = GRID_HEIGHT * 8;
 
 
     void drawCircle(int centerX, int centerY, int radius) const;
@@ -29,10 +29,10 @@ public:
     bool initialize();
 
     /// Draws on the screen, runs every frame
-    void draw(int counter, const std::vector<Person*>& people);
+    void draw(int counter, const std::vector<Person *> &people) const;
 
     /// Closes the SDL instance
-    void close();
+    void close() const;
 };
 
 

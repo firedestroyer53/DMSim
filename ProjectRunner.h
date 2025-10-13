@@ -10,10 +10,11 @@
 #include "GraphicsRunner.h"
 #include "Person.h"
 #include "BigCommands.h"
+#include "LinkedList.h"
 
 
 int main(int argc, char *argv[]);
 
-void update(int counter, std::vector<Person*>& persons);
+void update(int counter, std::vector<Person *> &persons);
 
 #endif //DMSIM_PROJECTRUNNER_H

@@ -10,35 +10,45 @@
 Person::Person() {
     globalFile = 0;
     globalRank = 0;
-    localRank = 0;
     localFile = 0;
+    localRank = 0;
     facing = HTs;
+    history.emplace_back(globalFile, globalRank);
     numCommands = 0;
 }
 
 Person::Person(const int file, const int rank, const Facing facing) {
-    this->globalRank = rank;
     this->globalFile = file;
+    this->globalRank = rank;
     this->facing = facing;
-    this->localRank = rank - RANK_OFFSET;
     this->localFile = file - FILE_OFFSET;
+    switch (facing) {
+        case HTs:
+            this->localRank = NUM_RANKS - (rank - RANK_OFFSET);
+            break;
+        case MVs:
+            this->localRank = (rank - RANK_OFFSET);
+        default:
+            break;
+    }
+    history.emplace_back(file, rank);
     numCommands = 0;
-}
-
-int Person::getRank() const {
-    return globalRank;
 }
 
 int Person::getFile() const {
     return globalFile;
 }
 
-int Person::getLocalRank() const {
-    return localRank;
+int Person::getRank() const {
+    return globalRank;
 }
 
 int Person::getLocalFile() const {
     return localFile;
+}
+
+int Person::getLocalRank() const {
+    return localRank;
 }
 
 Facing Person::getFacing() const {
@@ -56,26 +66,23 @@ std::pair<int, int> Person::getHistoryAt(const int counter) {
     return history[counter];
 }
 
-std::vector<std::pair<int, int>> * Person::getHistory() {
+std::vector<std::pair<int, int> > *Person::getHistory() {
     return &history;
 }
 
 void Person::executeNext() {
     const Command *command = this->commandQueue.front();
     commandQueue.pop();
-    const std::pair<Facing, std::pair<int, int> > newCoords = command->executeCommand(this->facing);
-    this->facing = newCoords.first;
-    this->globalFile += newCoords.second.first;
-    this->globalRank += newCoords.second.second;
+    const auto [fst, snd] = command->executeCommand(this->facing);
+    this->facing = fst;
+    this->globalFile += snd.first;
+    this->globalRank += snd.second;
     this->history.emplace_back(globalFile, globalRank);
     numCommands--;
 }
 
 bool Person::hasCommands() const {
-    if (this->commandQueue.empty()) {
-        return false;
-    }
-    return true;
+    return numCommands > 0;
 }
 
 
@@ -90,11 +97,11 @@ void Person::addCommands(const std::vector<Command *> &commands) {
     }
 }
 
-void Person::setFile(int f) {
+void Person::setFile(const int f) {
     this->globalFile = f;
 }
 
-void Person::setRank(int r) {
+void Person::setRank(const int r) {
     this->globalRank = r;
 }
 

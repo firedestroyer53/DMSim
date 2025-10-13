@@ -29,9 +29,6 @@ public:
     /// Executes the command based on the step type and direction, and then returns the displacement of the person
     /// @return the facing of the person and a pair of ints of the displacement of the person
     [[nodiscard]] std::pair<Facing, std::pair<int, int> > executeCommand(Facing) const;
-
-
-    std::string toString();
 };
 
 

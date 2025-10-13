@@ -15,21 +15,19 @@ int main(int argc, char *argv[]) {
     // Pre-processing of commands
 
     // Create people
-    std::vector<Person *> people;
-    for (int r = 0; r < NUM_RANKS; ++r) {
-        for (int f = 0; f < NUM_FILES; ++f) {
-            int spacedRank = RANK_OFFSET + r * 4;  // 4 units apart vertically
-            int spacedFile = FILE_OFFSET + f * 4;  // 4 units apart horizontally
-            people.push_back(new Person(spacedFile, spacedRank, HTs));
-        }
-    }
-
+    const std::vector<LinkedList<Person *> > people = BigCommands::setup(NUM_FILES, NUM_RANKS, MVs);
 
     BigCommands::counterMarch(&people);
-    auto * command = new Command(march, forward, false);
-    for (auto* person : people) {
-        for (int i = 0; i < 40; i++) {
-            person->addCommand(command);
+
+    const auto *command = new Command(march, forward, false);
+    for (auto rank: people) {
+        Node<Person *> *currentNode = rank.getFront();
+        while (currentNode != nullptr) {
+            Person *currentPerson = currentNode->getData();
+            while (currentPerson->getNumCommands() < 40) {
+                currentPerson->addCommand(command);
+            }
+            currentNode = currentNode->getNext();
         }
     }
 
@@ -37,11 +35,16 @@ int main(int argc, char *argv[]) {
     // display commands
     while (true) {
         bool shouldStop = false;
-        for (const auto person: people) {
-            if (!person->hasCommands()) {
-                shouldStop = true;
-            } else {
-                person->executeNext();
+        for (auto rank: people) {
+            Node<Person *> *currentNode = rank.getFront();
+            while (currentNode != nullptr) {
+                Person *person = currentNode->getData();
+                if (!person->hasCommands()) {
+                    shouldStop = true;
+                } else {
+                    person->executeNext();
+                }
+                currentNode = currentNode->getNext();
             }
         }
         if (shouldStop) {
@@ -53,6 +56,13 @@ int main(int argc, char *argv[]) {
     SDL_Event e;
     int counter = 0;
 
+    // after done processing, can turn into vector for graphics.
+    std::vector<Person *> persons;
+    for (auto rank: people) {
+        std::vector<Person *> v1 = rank.toVector();
+        persons.insert(persons.end(), v1.begin(), v1.end());
+    }
+
 
     // Main loop
     while (!quit) {
@@ -62,23 +72,22 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        gr->draw(counter, people);
+        gr->draw(counter, persons);
 
-        if (counter < people[0]->getHistory()->size()) {
+        if (counter < persons[0]->getHistory()->size()) {
             counter++;
         }
 
-        SDL_Delay(400); // ~10 fps
+        SDL_Delay(600);
     }
 
     // Clean up
-    for (const auto *p: people) delete p;
+    for (const auto *p: persons) delete p;
 
     gr->close();
 
     return 0;
 }
 
-void update(const int counter, const std::vector<Person*>& people) {
-
+void update(const int counter, const std::vector<Person *> &people) {
 }

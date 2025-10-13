@@ -17,7 +17,7 @@ class Person {
     int numCommands;
     Facing facing;
     std::queue<Command *> commandQueue;
-    std::vector<std::pair<int, int>> history;
+    std::vector<std::pair<int, int> > history;
 
 public:
     /// Creates a new Person object with rank and file initialized to 0
@@ -29,17 +29,17 @@ public:
     /// @param facing where the person is facing
     Person(int file, int rank, Facing facing);
 
-    /// @return the rank of the person on the field
-    [[nodiscard]] int getRank() const;
-
     /// @return the file of the person on the field
     [[nodiscard]] int getFile() const;
 
-    /// @return the local rank of the person on the field
-    [[nodiscard]] int getLocalRank() const;
+    /// @return the rank of the person on the field
+    [[nodiscard]] int getRank() const;
 
     /// @return the local file of the person on the field
     [[nodiscard]] int getLocalFile() const;
+
+    /// @return the local rank of the person on the field
+    [[nodiscard]] int getLocalRank() const;
 
     /// @return the facing of the person
     [[nodiscard]] Facing getFacing() const;
@@ -51,7 +51,7 @@ public:
     [[nodiscard]] std::pair<int, int> getHistoryAt(int counter);
 
     /// @return a reference to the history vector
-    [[nodiscard]] std::vector<std::pair<int, int>>* getHistory();
+    [[nodiscard]] std::vector<std::pair<int, int> > *getHistory();
 
     /// Sets the rank of the person
     void setRank(int r);

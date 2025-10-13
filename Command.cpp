@@ -79,12 +79,12 @@ std::pair<int, int> Command::deltaStep(const Facing facing) const {
             break;
 
         case SS:
-            result.first = -stepSize;
+            result.first = stepSize;
             result.second = 0;
             break;
 
         case PB:
-            result.first = stepSize;
+            result.first = -stepSize;
             result.second = 0;
             break;
         default: ;
@@ -94,7 +94,7 @@ std::pair<int, int> Command::deltaStep(const Facing facing) const {
 }
 
 
-Command::Command(const StepType step, const Direction dir, bool half) {
+Command::Command(const StepType step, const Direction dir, const bool half) {
     this->stepType = step;
     this->direction = dir;
     this->isHalfMarch = half;
@@ -103,7 +103,7 @@ Command::Command(const StepType step, const Direction dir, bool half) {
 std::pair<Facing, std::pair<int, int> > Command::executeCommand(Facing facing) const {
     std::pair<Facing, std::pair<int, int> > result;
     Facing newFace = newFacing(facing);
-    std::pair<int, int> change = deltaStep(facing);
+    std::pair<int, int> change = deltaStep(newFace);
     switch (this->stepType) {
         case march:
             // can just step in direction of facing, half steps are handled by the deltaStep function
