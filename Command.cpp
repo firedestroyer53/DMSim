@@ -100,6 +100,12 @@ Command::Command(const StepType step, const Direction dir, const bool half) {
     this->isHalfMarch = half;
 }
 
+Command::Command() {
+    this->stepType = halt;
+    this->direction = forward;
+    this->isHalfMarch = false;
+}
+
 std::pair<Facing, std::pair<int, int> > Command::executeCommand(Facing facing) const {
     std::pair<Facing, std::pair<int, int> > result;
     Facing newFace = newFacing(facing);
@@ -113,6 +119,10 @@ std::pair<Facing, std::pair<int, int> > Command::executeCommand(Facing facing) c
         case pivot:
             // handle turning steps
             result = std::make_pair(newFace, change);
+            break;
+
+        case halt:
+            result = std::make_pair(newFace, std::make_pair(0, 0));
             break;
 
         default:

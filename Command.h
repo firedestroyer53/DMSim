@@ -26,6 +26,9 @@ public:
     /// @param half the size of the step
     Command(StepType step, Direction dir, bool half);
 
+    /// Initializes an empty command e.g. halting / mark-timing etc
+    Command();
+
     /// Executes the command based on the step type and direction, and then returns the displacement of the person
     /// @return the facing of the person and a pair of ints of the displacement of the person
     [[nodiscard]] std::pair<Facing, std::pair<int, int> > executeCommand(Facing) const;

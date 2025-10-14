@@ -17,19 +17,20 @@ int main(int argc, char *argv[]) {
     // Create people
     const std::vector<LinkedList<Person *> > people = BigCommands::setup(NUM_FILES, NUM_RANKS, MVs);
 
-    BigCommands::counterMarch(&people);
+    BigCommands::cascade(&people, left);
 
     const auto *command = new Command(march, forward, false);
     for (auto rank: people) {
         Node<Person *> *currentNode = rank.getFront();
         while (currentNode != nullptr) {
             Person *currentPerson = currentNode->getData();
-            while (currentPerson->getNumCommands() < 40) {
+            while (currentPerson->getNumCommands() < 45) {
                 currentPerson->addCommand(command);
             }
             currentNode = currentNode->getNext();
         }
     }
+
 
 
     // display commands
@@ -78,7 +79,7 @@ int main(int argc, char *argv[]) {
             counter++;
         }
 
-        SDL_Delay(600);
+        SDL_Delay(200);
     }
 
     // Clean up

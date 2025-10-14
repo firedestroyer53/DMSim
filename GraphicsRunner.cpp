@@ -56,7 +56,7 @@ void GraphicsRunner::draw(const int counter, const std::vector<Person *> &people
 
         // Flip Y so origin is bottom-left instead of top-left
         const int screenY = SCREEN_HEIGHT - (coords.second * SCREEN_HEIGHT / GRID_HEIGHT);
-        if (i < 3) {
+        if (i < NUM_FILES) {
             SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
         }
         else {

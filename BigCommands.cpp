@@ -12,9 +12,9 @@ namespace BigCommands {
         std::vector<LinkedList<Person *> > people;
         switch (facing) {
             case MVs:
-                for (int r = numRanks; r >= 0; r--) {
+                for (int r = numRanks; r > 0; r--) {
                     auto *list = new LinkedList<Person *>();
-                    for (int f = numFiles; f >= 0; f--) {
+                    for (int f = numFiles; f > 0; f--) {
                         list->pushFront(new Node(new Person(FILE_OFFSET + (f * 4), RANK_OFFSET + (r * 4), facing)));
                     }
                     people.push_back(*list);
@@ -46,30 +46,47 @@ namespace BigCommands {
         commands.push_back(counterCommand);
         counterCommand = new Command(pivot, right, false);
         commands.push_back(counterCommand);
-        auto *marchForward = new Command(march, forward, false);
+        const auto *marchForward = new Command(march, forward, false);
         for (int i = 0; i < persons->size(); i++) {
             LinkedList<Person *> rank = persons->at(i);
             Node<Person *> *currentNode = rank.getFront();
-            std::vector<Command *> preCommands;
-            for (int step = 0; step <= i * 2; step++) {
-                preCommands.push_back(marchForward);
-            }
 
             while (currentNode != nullptr) {
                 Person *currentPerson = currentNode->getData();
-                currentPerson->addCommands(preCommands);
+                currentPerson->addCommandRepeated(marchForward, i * 2 + 1);
                 currentPerson->addCommands(commands);
                 currentNode = currentNode->getNext();
             }
         }
     }
 
-    void cascade(std::vector<Person *> *persons, Direction direction) {
+    void cascade(const std::vector<LinkedList<Person *> > *persons, Direction direction) {
+        const auto* marchForward = new Command(march, forward, false);
+        const auto* marktime = new Command();
+        const auto* stepLeft = new Command(pivot, direction, false);
+        for (int r = 0; r < persons->size(); ++r) { // loops thru ranks
+            LinkedList<Person *> rank = persons->at(r);
+            Node<Person *> *currentNode = rank.getFront();
+            for (int f = 0; f < rank.getSize(); ++f) { // loops thru files
+                if (direction == left) {
+                    // when dir is left, leftmost file needs to stop for NUM_FILES * 2
+                    Person* currentPerson = currentNode->getData();
+                    currentPerson->addCommandRepeated(marchForward, f * 2);
+                    currentPerson->addCommandRepeated(marktime, (NUM_FILES * 2 - f * 2 + 1) * 2);
+                    // still have to wait more for the step to get to you
+                    currentPerson->addCommandRepeated(marchForward, 2 * r);
+
+                    currentPerson->addCommand(stepLeft);
+                }
+                currentNode = currentNode->getNext();
+            }
+        }
     }
 
-    void column(std::vector<Person *> *persons, Direction direction) {
+    void column(std::vector<LinkedList<Person *> > *persons, Direction direction) {
+
     }
 
-    void oblique(std::vector<Person *> *persons, Direction direction) {
+    void oblique(std::vector<LinkedList<Person *> > *persons, Direction direction) {
     }
 }

@@ -13,7 +13,7 @@
 class GraphicsRunner {
     SDL_Window *window{};
     SDL_Renderer *renderer{};
-    const int GRID_WIDTH = 60;
+    const int GRID_WIDTH = 120;
     const int GRID_HEIGHT = 120;
     const int SCREEN_WIDTH = GRID_WIDTH * 8;
     const int SCREEN_HEIGHT = GRID_HEIGHT * 8;

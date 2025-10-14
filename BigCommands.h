@@ -15,11 +15,11 @@ namespace BigCommands {
 
     void counterMarch(const std::vector<LinkedList<Person *> > *persons);
 
-    void cascade(std::vector<Person *> *persons, Direction direction);
+    void cascade(const std::vector<LinkedList<Person *> > *persons, Direction direction);
 
-    void column(std::vector<Person *> *persons, Direction direction);
+    void column(std::vector<LinkedList<Person *> > *persons, Direction direction);
 
-    void oblique(std::vector<Person *> *persons, Direction direction);
+    void oblique(std::vector<LinkedList<Person *> > *persons, Direction direction);
 };
 
 

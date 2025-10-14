@@ -97,6 +97,12 @@ void Person::addCommands(const std::vector<Command *> &commands) {
     }
 }
 
+void Person::addCommandRepeated(const Command* command, int num) {
+    for (int i = 0; i < num; i++) {
+        addCommand(command);
+    }
+}
+
 void Person::setFile(const int f) {
     this->globalFile = f;
 }

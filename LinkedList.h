@@ -12,6 +12,7 @@ template<typename T>
 class LinkedList {
     Node<T> *front;
     Node<T> *back;
+    int size;
 
 public:
     LinkedList();
@@ -21,6 +22,7 @@ public:
 
     Node<T> *getFront() { return front; }
     Node<T> *getBack() { return back; }
+    [[nodiscard]] int getSize() const { return size; }
 
     std::vector<T> toVector();
 };
@@ -31,6 +33,7 @@ template<typename T>
 LinkedList<T>::LinkedList() {
     front = nullptr;
     back = nullptr;
+    size = 0;
 }
 
 template<typename T>
@@ -45,6 +48,7 @@ void LinkedList<T>::pushBack(Node<T> *node) {
         node->setPrev(back);
         back = node;
     }
+    size++;
 }
 
 template<typename T>
@@ -59,6 +63,7 @@ void LinkedList<T>::pushFront(Node<T> *node) {
         front->setPrev(node);
         front = node;
     }
+    size++;
 }
 
 template<typename T>

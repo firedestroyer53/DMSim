@@ -72,6 +72,11 @@ public:
     /// Adds a list of commands to the queue
     /// @param commands the list of commands to be added
     void addCommands(const std::vector<Command *> &commands);
+
+    /// Adds a command a certain amount of time.
+    /// @param command the command to be added
+    /// @param num the number of times to add the command
+    void addCommandRepeated(const Command *command, int num);
 };
 
 #endif //DMSIM_PERSON_H
